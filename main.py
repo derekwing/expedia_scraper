@@ -106,10 +106,8 @@ def sort_lowtohigh_price():
   apply_filter_button.click()
   sleep(random.uniform(10,15))
 
-def get_flights_data(url):
+def get_flights_data(url, date):
   flights_data = []
-  flight_date_element = driver.find_element(By.XPATH, "//span[@class='uitk-date-range-button-date-text']")
-  flight_date = flight_date_element.text.strip()
   flights_list_element = driver.find_element(By.XPATH, "//ul[@data-test-id='listings']")
   flights_list_html = flights_list_element.get_attribute("outerHTML")
   # print("flights_list_html:", flights_list_html)
@@ -123,7 +121,7 @@ def get_flights_data(url):
     flight_data["url"] = url
 
     # Flight Date
-    flight_data["flight_date"] = flight_date
+    flight_data["flight_date"] = date
 
     # Flight Price
     price_element = flight.find('span', attrs={"class": "uitk-lockup-price"})
@@ -207,5 +205,5 @@ if __name__ == '__main__':
   sleep(random.uniform(12,14))
 
   sort_lowtohigh_price()
-  flights_data = get_flights_data(expedia_url)
+  flights_data = get_flights_data(expedia_url, date)
   store_flights_data(flights_data, departure_airport, arrival_airport)
