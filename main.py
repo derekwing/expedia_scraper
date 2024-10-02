@@ -86,26 +86,6 @@ def sort_lowtohigh_price():
   apply_filter_button.click()
   sleep(random.uniform(7,10))
 
-def sort_lowtohigh_price():
-  # Sort prices by (lowest to highest)
-  filter_modal_button = driver.find_element(By.XPATH, "//button[@data-test-id='sort-filter-dialog-trigger']")
-  filter_modal_button.click()
-  sleep(random.uniform(1,2))
-
-  # Open filter dropdown
-  filter_dropdown = driver.find_element(By.XPATH, "//select[@id='sort-filter-dropdown-SORT']")
-  filter_dropdown.click()
-  sleep(random.uniform(0,1))
-
-  low_to_high_option = driver.find_element(By.XPATH, "//option[@value='PRICE_INCREASING']")
-  low_to_high_option.click()
-  sleep(random.uniform(1,2))
-
-  # Apply filter
-  apply_filter_button = driver.find_element(By.XPATH, "//button[@data-test-id='sort-filter-done-button']")
-  apply_filter_button.click()
-  sleep(random.uniform(10,15))
-
 def get_flights_data(url, date):
   flights_data = []
   flights_list_element = driver.find_element(By.XPATH, "//ul[@data-test-id='listings']")
@@ -121,7 +101,8 @@ def get_flights_data(url, date):
     flight_data["url"] = url
 
     # Flight Date
-    flight_data["flight_date"] = date
+    day_of_week = datetime.datetime.strptime(date, '%b %d, %Y').strftime('%A')
+    flight_data["flight_date"] = f"{day_of_week[:3]} - {date}"
 
     # Flight Price
     price_element = flight.find('span', attrs={"class": "uitk-lockup-price"})
